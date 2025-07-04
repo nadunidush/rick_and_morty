@@ -8,7 +8,7 @@ class SearchEpisodeCard extends StatelessWidget {
   final Episode episode;
   final RickAndMortyApiService apiService;
   final WatchlistManager watchlistManager;
-  final Function(Episode) onRateClicked; 
+  final Function(Episode) onRateClicked;
 
   const SearchEpisodeCard({
     super.key,
@@ -25,7 +25,11 @@ class SearchEpisodeCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EpisodeDetailScreen(episode: episode, apiService: apiService, watchlistManager: watchlistManager),
+            builder: (context) => EpisodeDetailScreen(
+              episode: episode,
+              apiService: apiService,
+              watchlistManager: watchlistManager,
+            ),
           ),
         );
       },
@@ -40,7 +44,8 @@ class SearchEpisodeCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
-                  episode.imageUrl ?? 'https://placehold.co/120x90/2D3748/FFFFFF?text=No+Image', // Placeholder for missing image
+                  episode.imageUrl ??
+                      'https://placehold.co/120x90/2D3748/FFFFFF?text=No+Image', // Placeholder for missing image
                   width: 120,
                   height: 90,
                   fit: BoxFit.cover,
@@ -49,7 +54,11 @@ class SearchEpisodeCard extends StatelessWidget {
                       width: 120,
                       height: 90,
                       color: Colors.grey[700],
-                      child: const Icon(Icons.broken_image, color: Colors.white54, size: 40),
+                      child: const Icon(
+                        Icons.broken_image,
+                        color: Colors.white54,
+                        size: 40,
+                      ),
                     );
                   },
                 ),
@@ -62,7 +71,9 @@ class SearchEpisodeCard extends StatelessWidget {
                   children: [
                     Text(
                       episode.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(fontSize: 18),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -71,24 +82,35 @@ class SearchEpisodeCard extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            onRateClicked(episode); // Call the callback when rating is clicked
+                            onRateClicked(episode);
                           },
                           child: Row(
                             children: [
-                              const Icon(Icons.star, color: Colors.amber, size: 16),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 16,
+                              ),
                               const SizedBox(width: 4.0),
                               Text(
-                                episode.userRating > 0 ? episode.userRating.toStringAsFixed(1) : 'N/A', // Display user rating or N/A
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.amber),
+                                episode.userRating > 0
+                                    ? episode.userRating.toStringAsFixed(1)
+                                    : 'N/A',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: Colors.amber),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(width: 16.0),
-                        const Icon(Icons.movie_filter, color: Colors.white54, size: 16),
+                        const Icon(
+                          Icons.movie_filter,
+                          color: Colors.white54,
+                          size: 16,
+                        ),
                         const SizedBox(width: 4.0),
                         Text(
-                          episode.episode, // Episode code (e.g., S01E01)
+                          episode.episode,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -96,17 +118,25 @@ class SearchEpisodeCard extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, color: Colors.white54, size: 16),
+                        const Icon(
+                          Icons.calendar_today,
+                          color: Colors.white54,
+                          size: 16,
+                        ),
                         const SizedBox(width: 4.0),
                         Text(
-                          episode.airDate, // Air date
+                          episode.airDate,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(width: 16.0),
-                        const Icon(Icons.timer, color: Colors.white54, size: 16),
+                        const Icon(
+                          Icons.timer,
+                          color: Colors.white54,
+                          size: 16,
+                        ),
                         const SizedBox(width: 4.0),
                         Text(
-                          '22 minutes', // Placeholder for duration
+                          '22 minutes',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],

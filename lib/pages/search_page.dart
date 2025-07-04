@@ -14,7 +14,11 @@ import 'package:rick_and_morty/widgets/shared/right_navbar.dart';
 class SearchPage extends StatefulWidget {
   final RickAndMortyApiService apiService;
   final WatchlistManager watchlistManager;
-  const SearchPage({super.key, required this.apiService, required this.watchlistManager});
+  const SearchPage({
+    super.key,
+    required this.apiService,
+    required this.watchlistManager,
+  });
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -27,8 +31,7 @@ class _SearchPageState extends State<SearchPage> {
   String? _errorMessage;
   final TextEditingController _searchController = TextEditingController();
 
-
-  int _selectedIndex = 1; 
+  int _selectedIndex = 1;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -36,14 +39,24 @@ class _SearchPageState extends State<SearchPage> {
     if (index == 0) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(apiService: widget.apiService, watchlistManager: widget.watchlistManager)),
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            apiService: widget.apiService,
+            watchlistManager: widget.watchlistManager,
+          ),
+        ),
         (route) => false,
       );
     } else if (index == 1) {
     } else if (index == 2) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WatchlistPage(apiService: widget.apiService, watchlistManager: widget.watchlistManager)),
+        MaterialPageRoute(
+          builder: (context) => WatchlistPage(
+            apiService: widget.apiService,
+            watchlistManager: widget.watchlistManager,
+          ),
+        ),
       );
     }
   }
@@ -62,7 +75,6 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-
   //Get All Episode from services
   Future<void> _fetchAllEpisodesForSearch() async {
     setState(() {
@@ -71,7 +83,7 @@ class _SearchPageState extends State<SearchPage> {
     });
     try {
       _allEpisodes = await widget.apiService.fetchAllEpisodes();
-      _filteredEpisodes = _allEpisodes; 
+      _filteredEpisodes = _allEpisodes;
       setState(() {
         _isLoading = false;
       });
@@ -90,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       _filteredEpisodes = _allEpisodes.where((episode) {
         return episode.name.toLowerCase().contains(query) ||
-               episode.episode.toLowerCase().contains(query);
+            episode.episode.toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -100,7 +112,6 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       final index = _allEpisodes.indexWhere((e) => e.id == episodeId);
       if (index != -1) {
-        
         _allEpisodes[index] = Episode(
           id: _allEpisodes[index].id,
           name: _allEpisodes[index].name,
@@ -110,9 +121,9 @@ class _SearchPageState extends State<SearchPage> {
           url: _allEpisodes[index].url,
           created: _allEpisodes[index].created,
           imageUrl: _allEpisodes[index].imageUrl,
-          userRating: newRating, 
+          userRating: newRating,
         );
-        
+
         _onSearchChanged();
       }
     });
@@ -128,13 +139,23 @@ class _SearchPageState extends State<SearchPage> {
           ? Column(
               children: [
                 Expanded(child: _buildSearchPageContent(context)),
-                buildBottomNavBar(context, 'Search', widget.apiService, widget.watchlistManager),
+                buildBottomNavBar(
+                  context,
+                  'Search',
+                  widget.apiService,
+                  widget.watchlistManager,
+                ),
               ],
             )
           : Row(
               children: [
                 Expanded(child: _buildSearchPageContent(context)),
-                buildRightNavBar(context, 'Search', widget.apiService, widget.watchlistManager),
+                buildRightNavBar(
+                  context,
+                  'Search',
+                  widget.apiService,
+                  widget.watchlistManager,
+                ),
               ],
             ),
     );
@@ -145,18 +166,15 @@ class _SearchPageState extends State<SearchPage> {
     final isMobile = screenType == ScreenType.mobile;
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(isMobile ? 16.0 : 32.0), 
+      padding: EdgeInsets.all(isMobile ? 16.0 : 32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text(
-                'Search',
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
+              Text('Search', style: Theme.of(context).textTheme.displayLarge),
               const SizedBox(width: 8),
-              const Icon(Icons.info_outline, color: Colors.white54, size: 24), 
+              const Icon(Icons.info_outline, color: Colors.white54, size: 24),
             ],
           ),
           const SizedBox(height: 24.0),
@@ -164,9 +182,12 @@ class _SearchPageState extends State<SearchPage> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Pilot', 
+              hintText: 'Pilot',
               suffixIcon: const Icon(Icons.search),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 20.0,
+              ),
             ),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
@@ -175,50 +196,53 @@ class _SearchPageState extends State<SearchPage> {
           _isLoading
               ? const Center(child: CircularProgressIndicator())
               : _errorMessage != null
-                  ? Center(
-                      child: Text(_errorMessage!, style: const TextStyle(color: Colors.red, fontSize: 16)),
-                    )
-                  : _filteredEpisodes.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'No episodes found matching your search.',
-                            style: TextStyle(color: Colors.white54, fontSize: 16),
-                          ),
-                        )
-                      : GridView.builder(
-                          shrinkWrap: true, 
-                          physics: const NeverScrollableScrollPhysics(), 
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: isMobile ? 1 : 2, 
-                            crossAxisSpacing: isMobile ? 16.0 : 30.0, 
-                            mainAxisSpacing: isMobile ? 16.0 : 30.0, 
-                            childAspectRatio: isMobile ? 3.0 : 2.2, 
-                          ),
-                          itemCount: _filteredEpisodes.length,
-                          itemBuilder: (context, index) {
-                            final episode = _filteredEpisodes[index];
-                            return SearchEpisodeCard(
-                              episode: episode,
-                              apiService: widget.apiService,
-                              watchlistManager: widget.watchlistManager,
-                              onRateClicked: (selectedEpisode) async {
-                                final double? newRating = await showDialog<double>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RatingDialog(
-                                      initialRating: selectedEpisode.userRating,
-                                    );
-                                  },
-                                );
-                                if (newRating != null) {
-                                  _updateEpisodeRating(selectedEpisode.id, newRating);
-                                }
-                              },
+              ? Center(
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                  ),
+                )
+              : _filteredEpisodes.isEmpty
+              ? const Center(
+                  child: Text(
+                    'No episodes found matching your search.',
+                    style: TextStyle(color: Colors.white54, fontSize: 16),
+                  ),
+                )
+              : GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: isMobile ? 1 : 2,
+                    crossAxisSpacing: isMobile ? 16.0 : 30.0,
+                    mainAxisSpacing: isMobile ? 16.0 : 30.0,
+                    childAspectRatio: isMobile ? 4.0 : 4.2,
+                  ),
+                  itemCount: _filteredEpisodes.length,
+                  itemBuilder: (context, index) {
+                    final episode = _filteredEpisodes[index];
+                    return SearchEpisodeCard(
+                      episode: episode,
+                      apiService: widget.apiService,
+                      watchlistManager: widget.watchlistManager,
+                      onRateClicked: (selectedEpisode) async {
+                        final double? newRating = await showDialog<double>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return RatingDialog(
+                              initialRating: selectedEpisode.userRating,
                             );
                           },
-                        ),
-      ],
-    ),
-  );
+                        );
+                        if (newRating != null) {
+                          _updateEpisodeRating(selectedEpisode.id, newRating);
+                        }
+                      },
+                    );
+                  },
+                ),
+        ],
+      ),
+    );
   }
 }

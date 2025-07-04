@@ -13,14 +13,18 @@ import 'package:rick_and_morty/widgets/shared/right_navbar.dart';
 class WatchlistPage extends StatefulWidget {
   final RickAndMortyApiService apiService;
   final WatchlistManager watchlistManager;
-  const WatchlistPage({super.key, required this.apiService, required this.watchlistManager});
+  const WatchlistPage({
+    super.key,
+    required this.apiService,
+    required this.watchlistManager,
+  });
 
   @override
   State<WatchlistPage> createState() => _WatchlistPageState();
 }
 
 class _WatchlistPageState extends State<WatchlistPage> {
-  int _selectedIndex = 2; 
+  int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -29,17 +33,26 @@ class _WatchlistPageState extends State<WatchlistPage> {
     if (index == 0) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(apiService: widget.apiService, watchlistManager: widget.watchlistManager)),
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            apiService: widget.apiService,
+            watchlistManager: widget.watchlistManager,
+          ),
+        ),
         (route) => false,
       );
     } else if (index == 1) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => SearchPage(apiService: widget.apiService, watchlistManager: widget.watchlistManager)),
+        MaterialPageRoute(
+          builder: (context) => SearchPage(
+            apiService: widget.apiService,
+            watchlistManager: widget.watchlistManager,
+          ),
+        ),
         (route) => false,
       );
-    } else if (index == 2) {
-    }
+    } else if (index == 2) {}
   }
 
   @override
@@ -52,13 +65,23 @@ class _WatchlistPageState extends State<WatchlistPage> {
           ? Column(
               children: [
                 Expanded(child: _buildWatchlistPageContent(context)),
-                buildBottomNavBar(context, 'Watchlist', widget.apiService, widget.watchlistManager),
+                buildBottomNavBar(
+                  context,
+                  'Watchlist',
+                  widget.apiService,
+                  widget.watchlistManager,
+                ),
               ],
             )
           : Row(
               children: [
                 Expanded(child: _buildWatchlistPageContent(context)),
-                buildRightNavBar(context, 'Watchlist', widget.apiService, widget.watchlistManager),
+                buildRightNavBar(
+                  context,
+                  'Watchlist',
+                  widget.apiService,
+                  widget.watchlistManager,
+                ),
               ],
             ),
     );
@@ -74,10 +97,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Watchlist',
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
+          Text('Watchlist', style: Theme.of(context).textTheme.displayLarge),
           const SizedBox(height: 24.0),
           Expanded(
             child: ValueListenableBuilder<List<Episode>>(
@@ -95,10 +115,10 @@ class _WatchlistPageState extends State<WatchlistPage> {
 
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isMobile ? 1 : 2, 
+                    crossAxisCount: isMobile ? 1 : 2,
                     crossAxisSpacing: isMobile ? 16.0 : 30.0,
                     mainAxisSpacing: isMobile ? 16.0 : 30.0,
-                    childAspectRatio: isMobile ? 3.0 : 2.2, 
+                    childAspectRatio: isMobile ? 4.0 : 4.2,
                   ),
                   itemCount: watchlistEpisodes.length,
                   itemBuilder: (context, index) {
@@ -117,9 +137,11 @@ class _WatchlistPageState extends State<WatchlistPage> {
                           },
                         );
                         if (newRating != null) {
-                          widget.watchlistManager.removeEpisode(selectedEpisode); 
-                          selectedEpisode.userRating = newRating; 
-                          widget.watchlistManager.addEpisode(selectedEpisode); 
+                          widget.watchlistManager.removeEpisode(
+                            selectedEpisode,
+                          );
+                          selectedEpisode.userRating = newRating;
+                          widget.watchlistManager.addEpisode(selectedEpisode);
                         }
                       },
                     );
@@ -133,5 +155,3 @@ class _WatchlistPageState extends State<WatchlistPage> {
     );
   }
 }
-
-
