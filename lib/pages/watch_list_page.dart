@@ -118,7 +118,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
                     crossAxisCount: isMobile ? 1 : 2,
                     crossAxisSpacing: isMobile ? 16.0 : 30.0,
                     mainAxisSpacing: isMobile ? 16.0 : 30.0,
-                    childAspectRatio: isMobile ? 4.0 : 4.2,
+                    childAspectRatio: isMobile ? 3.0 : 4.2,
                   ),
                   itemCount: watchlistEpisodes.length,
                   itemBuilder: (context, index) {

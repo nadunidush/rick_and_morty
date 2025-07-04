@@ -117,25 +117,32 @@ class SearchEpisodeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Icon(
                           Icons.calendar_today,
                           color: Colors.white54,
                           size: 16,
                         ),
-                        const SizedBox(width: 4.0),
-                        Text(
-                          episode.airDate,
-                          style: Theme.of(context).textTheme.bodySmall,
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            episode.airDate,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
-                        const SizedBox(width: 16.0),
+
                         const Icon(
                           Icons.timer,
                           color: Colors.white54,
                           size: 16,
                         ),
-                        const SizedBox(width: 4.0),
+
                         Text(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           '22 minutes',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),

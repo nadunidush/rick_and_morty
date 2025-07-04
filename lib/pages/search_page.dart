@@ -216,7 +216,7 @@ class _SearchPageState extends State<SearchPage> {
                     crossAxisCount: isMobile ? 1 : 2,
                     crossAxisSpacing: isMobile ? 16.0 : 30.0,
                     mainAxisSpacing: isMobile ? 16.0 : 30.0,
-                    childAspectRatio: isMobile ? 4.0 : 4.2,
+                    childAspectRatio: isMobile ? 3.0 : 4.2,
                   ),
                   itemCount: _filteredEpisodes.length,
                   itemBuilder: (context, index) {
